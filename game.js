@@ -80,10 +80,10 @@ function game(playerSelection) {
 
 function setImages(playerSelection, computerSelection) {
     const playerImage = document.querySelector('.player-image');
-    playerImage.src = `./imgs/${playerSelection}.png`;
+    playerImage.src = `imgs/${playerSelection}.png`;
 
     const computerImage = document.querySelector('.computer-image');
-    computerImage.src = `./imgs/${computerSelection}.png`;
+    computerImage.src = `imgs/${computerSelection}.png`;
 }
 
 function disableButtons() {
