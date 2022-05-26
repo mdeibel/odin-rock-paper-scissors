@@ -1,47 +1,46 @@
 function computerPlay() {
     const randomChoice = Math.floor(Math.random() * 3);
     if (randomChoice === 0) {
-        return 'Rock';
+        return 'rock';
     }
     else if (randomChoice === 1) {
-        return 'Paper';
+        return 'paper';
     }
     else {
-        return 'Scissors';
+        return 'scissors';
     }
 }
 
 function playOneRound(playerSelection, computerSelection) {
-    const lowerComputerSelection = computerSelection.toLowerCase();
-    switch (playerSelection.toLowerCase()) {
+    switch (playerSelection) {
         case 'rock':
-            if (lowerComputerSelection === 'rock') {
+            if (computerSelection === 'rock') {
                 return 'It\'s a tie! Rock ties Rock.';
             }
-            else if (lowerComputerSelection === 'paper') {
+            else if (computerSelection === 'paper') {
                 return 'You lose! Paper beats Rock';
             }
-            else if (lowerComputerSelection === 'scissors') {
+            else if (computerSelection === 'scissors') {
                 return 'You win! Rock beats Scissors';
             }
         case 'paper':
-            if (lowerComputerSelection === 'rock') {
+            if (computerSelection === 'rock') {
                 return 'You win! Paper beats Rock';
             }
-            else if (lowerComputerSelection === 'paper') {
+            else if (computerSelection === 'paper') {
                 return 'It\'s a tie! Paper ties Paper.';
             }
-            else if (lowerComputerSelection === 'scissors') {
+            else if (computerSelection === 'scissors') {
                 return 'You lose! Scissors beats Paper';
             }
         case 'scissors':
-            if (lowerComputerSelection === 'rock') {
+            if (computerSelection === 'rock') {
                 return 'You lose! Rock beats Scissors';
             }
-            else if (lowerComputerSelection === 'paper') {
+            else if (computerSelection === 'paper') {
                 return 'You win! Scissors beats Paper';
             }
-            else if (lowerComputerSelection === 'scissors') {
+            else if (computerSelection === 'scissors') {
                 return 'It\'s a tie! Scissors ties Scissors.';
             }
         default:
@@ -50,15 +49,24 @@ function playOneRound(playerSelection, computerSelection) {
 }
 
 function game(playerSelection) {
-    const result = playOneRound(playerSelection, computerPlay());
+    const computerSelection = computerPlay();
+
+    setImages(playerSelection, computerSelection);
+
+    const result = playOneRound(playerSelection, computerSelection);
     if (result.startsWith('You win!')) {
         playerScore++;
     }
     else if (result.startsWith('You lose!')) {
         computerScore++;
     }
+
     const round = document.querySelector('.round');
     round.textContent = result;
+    round.classList.remove('unstarted');
+
+    document.querySelector('.buttons').classList.remove('unstarted');
+
     score.textContent = `You have ${playerScore}, computer has ${computerScore}.`;
     if (playerScore >= 5) {
         score.textContent += ' You won the match! Refresh to play again.'
@@ -70,6 +78,14 @@ function game(playerSelection) {
     }
 }
 
+function setImages(playerSelection, computerSelection) {
+    const playerImage = document.querySelector('.player-image');
+    playerImage.src = `./imgs/${playerSelection}.png`;
+
+    const computerImage = document.querySelector('.computer-image');
+    computerImage.src = `./imgs/${computerSelection}.png`;
+}
+
 function disableButtons() {
     buttons.forEach(button => {
         button.disabled = true;
@@ -78,7 +94,7 @@ function disableButtons() {
 
 const buttons = document.querySelectorAll('button');
 buttons.forEach(button => {
-    button.addEventListener('click', () => { game(button.textContent) });
+    button.addEventListener('click', () => { game(button.textContent.toLowerCase()) });
 });
 
 let playerScore = 0;
